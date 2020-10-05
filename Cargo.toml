@@ -6,4 +6,15 @@ edition = "2018"
 
 [dependencies]
 crossbeam = "0.7.3"
-mavlink = { version = "0.8.6", features = ["ardupilotmega"] }
+
+[dependencies.mavlink]
+version = "0.8.6"
+features = ["ardupilotmega"]
+
+[dependencies.gtk]
+version = "0.9.0"
+features = ["v3_16"]
+
+[dependencies.gio]
+version = ""
+features = ["v2_44"]
