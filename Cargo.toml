@@ -1,0 +1,9 @@
+[package]
+name = "handy-gcs"
+version = "0.1.0"
+authors = ["Eric Mikulin <ericm99@gmail.com>"]
+edition = "2018"
+
+[dependencies]
+crossbeam = "0.7.3"
+mavlink = { version = "0.8.6", features = ["ardupilotmega"] }
