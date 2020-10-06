@@ -14,7 +14,7 @@ fn main() {
 
     application.connect_activate(|app| {
         let window = ApplicationWindow::new(app);
-        window.set_title("First GTK+ Program");
+        window.set_title("Handy GCS");
         window.set_default_size(350, 70);
 
         let button = Button::with_label("Click me!");
@@ -22,8 +22,8 @@ fn main() {
             println!("Clicked!");
         });
         window.add(&button);
-
         window.show_all();
+        println!("{:?}", window.get_size());
     });
 
     application.run(&[]);
