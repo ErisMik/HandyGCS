@@ -18,12 +18,13 @@ fn main() {
         window.set_default_size(350, 70);
 
         let button = Button::with_label("Click me!");
-        button.connect_clicked(|_| {
-            println!("Clicked!");
-        });
         window.add(&button);
         window.show_all();
-        println!("{:?}", window.get_size());
+
+        button.connect_clicked(move |_| {
+
+            println!("Size: {:?}", window.get_size());
+        });
     });
 
     application.run(&[]);
