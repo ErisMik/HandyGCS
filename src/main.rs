@@ -7,19 +7,13 @@ use gtk::{Application, ApplicationWindow, Builder, Button, Entry, Label};
 
 use std::env::args;
 
-fn build_ui(app: &gtk::Application) {
-    let glade_src = include_str!("handy.glade");
-    let builder = Builder::from_string(glade_src);
-
-    let window: ApplicationWindow = builder.get_object("MainWindow").expect("Could not find");
-    window.set_application(Some(app));
-
-    let ip_entry: Entry = builder.get_object("IPEntry").expect("Could not find");
-    let port_entry: Entry = builder.get_object("PortEntry").expect("Could not find");
-    let connect_button: Button = builder.get_object("ConnectButton").expect("Could not find");
+fn build_connection(builder: &Builder) {
+        let ip_entry: Entry = builder.get_object("IPEntry").unwrap();
+    let port_entry: Entry = builder.get_object("PortEntry").unwrap();
+    let connect_button: Button = builder.get_object("ConnectButton").unwrap();
     let connection_status_label: Label = builder
         .get_object("ConnectionStatusLabel")
-        .expect("Could not find");
+        .unwrap();
 
     connect_button.connect_clicked(move |_| {
         let new_label = format!(
@@ -30,7 +24,18 @@ fn build_ui(app: &gtk::Application) {
         connection_status_label.set_text(&new_label);
     });
 
-    window.show_all();
+}
+
+fn build_ui(app: &gtk::Application) {
+    let glade_src = include_str!("handy.glade");
+    let builder = Builder::from_string(glade_src);
+
+    let main_window: ApplicationWindow = builder.get_object("MainWindow").unwrap();
+    main_window.set_application(Some(app));
+
+    build_connection(&builder);
+
+    main_window.show_all();
 }
 
 fn main() {
