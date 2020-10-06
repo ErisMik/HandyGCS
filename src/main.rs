@@ -8,8 +8,7 @@ use gtk::{Application, ApplicationWindow, Builder, Button, Entry, Label};
 use std::env::args;
 
 fn build_connection(builder: &Builder) {
-        let ip_entry: Entry = builder.get_object("IPEntry").unwrap();
-    let port_entry: Entry = builder.get_object("PortEntry").unwrap();
+    let connection_entry: Entry = builder.get_object("ConnectionEntry").unwrap();
     let connect_button: Button = builder.get_object("ConnectButton").unwrap();
     let connection_status_label: Label = builder
         .get_object("ConnectionStatusLabel")
@@ -17,9 +16,8 @@ fn build_connection(builder: &Builder) {
 
     connect_button.connect_clicked(move |_| {
         let new_label = format!(
-            "Connected {}:{}",
-            ip_entry.get_text(),
-            port_entry.get_text()
+            "Connected {}",
+            connection_entry.get_text()
         );
         connection_status_label.set_text(&new_label);
     });
