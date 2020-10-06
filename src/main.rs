@@ -1,31 +1,45 @@
-extern crate gtk;
 extern crate gio;
+extern crate gtk;
 
-use gtk::prelude::*;
 use gio::prelude::*;
+use gtk::prelude::*;
+use gtk::{Application, ApplicationWindow, Builder, Button, Entry, Label};
 
-use gtk::{Application, ApplicationWindow, Button};
+use std::env::args;
 
-fn main() {
-    let application = Application::new(
-        Some("com.github.gtk-rs.examples.basic"),
-        Default::default(),
-    ).expect("failed to initialize GTK application");
+fn build_ui(app: &gtk::Application) {
+    let glade_src = include_str!("handy.glade");
+    let builder = Builder::from_string(glade_src);
 
-    application.connect_activate(|app| {
-        let window = ApplicationWindow::new(app);
-        window.set_title("Handy GCS");
-        window.set_default_size(350, 70);
+    let window: ApplicationWindow = builder.get_object("MainWindow").expect("Could not find");
+    window.set_application(Some(app));
 
-        let button = Button::with_label("Click me!");
-        window.add(&button);
-        window.show_all();
+    let ip_entry: Entry = builder.get_object("IPEntry").expect("Could not find");
+    let port_entry: Entry = builder.get_object("PortEntry").expect("Could not find");
+    let connect_button: Button = builder.get_object("ConnectButton").expect("Could not find");
+    let connection_status_label: Label = builder
+        .get_object("ConnectionStatusLabel")
+        .expect("Could not find");
 
-        button.connect_clicked(move |_| {
-
-            println!("Size: {:?}", window.get_size());
-        });
+    connect_button.connect_clicked(move |_| {
+        let new_label = format!(
+            "Connected {}:{}",
+            ip_entry.get_text(),
+            port_entry.get_text()
+        );
+        connection_status_label.set_text(&new_label);
     });
 
-    application.run(&[]);
+    window.show_all();
+}
+
+fn main() {
+    let application = Application::new(Some("com.github.erismik.HandyGCS"), Default::default())
+        .expect("Failed to initialize GTK application");
+
+    application.connect_activate(|app| {
+        build_ui(app);
+    });
+
+    application.run(&args().collect::<Vec<_>>());
 }
